@@ -1,8 +1,7 @@
 const datas = {
   name: 'Parker Lewis',
   classroom: 'Eleventh grade',
-  grades: [
-    {
+  grades: [{
       name: 'Mathematics',
       coeff: 7,
       grade: 9,
@@ -39,7 +38,7 @@ const app = {
   /**
    * DOM loading
    */
-  init: function() {
+  init: function () {
     app.gradebook = document.getElementById('gradebook');
     app.create();
   },
@@ -47,7 +46,7 @@ const app = {
   /**
    * DOM generation
    */
-  create: function() {
+  create: function () {
     // Create
     app.createTable();
     app.createRows();
@@ -60,7 +59,7 @@ const app = {
   /**
    * Create table + caption
    */
-  createTable: function() {
+  createTable: function () {
     app.table = document.createElement('table');
 
     // Caption
@@ -72,7 +71,7 @@ const app = {
   /**
    * Create grade rows
    */
-  createRows: function() {
+  createRows: function () {
     // Creating row for each fields
     datas.grades.forEach((grade) => {
       const row = document.createElement('tr');
@@ -90,9 +89,8 @@ const app = {
       let inputCoeff = document.createElement('input');
       inputCoeff.value = grade.coeff;
       inputCoeff.maxLength = 1;
-      inputCoeff.addEventListener('change', function() {
+      inputCoeff.addEventListener('change', function () {
         grade.coeff = Number(inputCoeff.value);
-        app.create();
       });
 
       // Append
@@ -107,7 +105,7 @@ const app = {
       let inputGrade = document.createElement('input');
       inputGrade.value = grade.grade;
       inputGrade.maxLength = 2;
-      inputGrade.addEventListener('change', function() {
+      inputGrade.addEventListener('change', function () {
         grade.grade = Number(inputGrade.value);
         app.create();
       });
@@ -129,7 +127,7 @@ const app = {
   /**
    * Create average row
    */
-  createAverage: function() {
+  createAverage: function () {
     // Row
     const row = document.createElement('tr');
     row.id = 'gradebook-average';
@@ -142,14 +140,22 @@ const app = {
     /* Average */
     // Cell
     const averageCell = document.createElement('td');
-    averageCell.rowSpan = 2;
+    averageCell.colSpan = 2;
 
     // Cumul
     // One Reduce To Rule Them All.
-    const cumulObj = datas.grades.reduce((cumul, grade) => ({
-      grade: cumul.grade + grade.grade * grade.coeff,
-      coeff: cumul.coeff + grade.coeff,
-    }), 0);
+    const cumulCoeff = datas.grades.reduce((cumul, datas) =>
+      cumul + datas.coeff, 0);
+    console.log(cumulCoeff);
+
+    // Faire un forEach avec un reduce à l'intérieur pour boucler sur chaque ligne de matière et calculer le produit du coefficient et de la note et reduce pour tout ajouter
+
+    // const cumulGrades = datas.grades.reduce((cumul, datas) =>
+    //    datas.grades.forEach ( element, index) =>   
+    // cumul + datas.grade * grade.coeff, 0);
+    // console.log(cumulGrades);
+
+    
 
     // Average, with 2 decimals
     const average = Math.round(cumulObj.grade / cumulObj.coeff * 100) / 100;
@@ -163,6 +169,7 @@ const app = {
     row.className = average > 10 ? 'error' : 'success';
     app.table.appendChild(row);
   },
+  
 };
 
-document.addEventListener('DOMContentLoaded', app);
+document.addEventListener('DOMContentLoaded', app.init);
